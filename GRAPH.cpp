@@ -97,9 +97,10 @@ for (int  i = 0; i < n; i++)
 void rang(link *arg[n]) {
 	int count = 0;
 	int max = 0;
-
-	for (int i = 0; i < n; i++)
+	int a = 0;
+		for (int i=0; i < n; i++)
 	{
+		
 		if (arg[i])
 		{
 			link *start = arg[i];
@@ -107,15 +108,31 @@ void rang(link *arg[n]) {
 			{
 				start = start->next;
 				count++;
+				
 			}
+			for (int x = 0; x < n; x++)
+			{
+				if (arg[x])
+				{
+					link *start = arg[x];
+					while (start->next)
+					{
+						start = start->next;
+						if (start->key ==arg[i]->key  ) { a++; }
+					}
+				}
+			}
+			
+			count = count + a;
 			if (count>max)
 			{
 				max = count;
 			}
 			count = 0;
+			a = 0;
 		}
 	}
-	cout << "Max stepen na graph e : ";
+cout << "Max stepen na graph e : ";
 	cout << max;
 }
 
