@@ -1,0 +1,14 @@
+#include <stdio.h>
+#include "shared_lib/shared.h"
+
+int main(){
+	sem_t sem2;
+	sem2=sem_init(6222);
+        sem_set(sem2,0);
+	char *c;
+	c=(char*)getmem(6166);
+	PS(sem2);
+	printf("Value: %d \n",*c);
+	VS(sem2);
+return 0;
+}
