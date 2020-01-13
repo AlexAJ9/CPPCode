@@ -1,7 +1,11 @@
-#include<iostream>.h
+#include <iostream>.h
 using namespace std;
 const int n = 15;
-struct link { char key; link *next; }*gr[n];
+struct link
+{
+	char key;
+	link *next;
+} * gr[n];
 void init(link *gr[n])
 {
 	for (int i = 0; i < n; i++)
@@ -10,20 +14,19 @@ void init(link *gr[n])
 int search_node(link *gr[], char c)
 {
 	int flag = 0;
-	for (int  i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)
 	{
 		if (gr[i])
 		{
-			if (gr[i]->key==c)
+			if (gr[i]->key == c)
 			{
 				flag = 1;
 			}
-
 		}
 	}
 	return flag;
 }
-int search_arc(link*gr[5], char c1, char c2)
+int search_arc(link *gr[5], char c1, char c2)
 {
 	int flag = 0;
 	if (search_node(gr, c1) && search_node(gr, c2))
@@ -32,7 +35,7 @@ int search_arc(link*gr[5], char c1, char c2)
 		while (gr[i]->key != c1)
 			i++;
 		link *p = gr[i];
-		while (p->key != c2&&p->next != NULL)
+		while (p->key != c2 && p->next != NULL)
 			p = p->next;
 		if (p->key == c2)
 			flag = 1;
@@ -41,7 +44,7 @@ int search_arc(link*gr[5], char c1, char c2)
 }
 void add_node(link *gr[n], char c)
 {
-	if (search_node(gr,c))
+	if (search_node(gr, c))
 	{
 		cout << "Exsisting node \n";
 	}
@@ -64,7 +67,7 @@ void add_arc(link *gr[n], char c1, char c2)
 {
 	int i = 0;
 	link *p;
-	if(search_arc(gr,c1,c2))
+	if (search_arc(gr, c1, c2))
 	{
 		cout << " \n Existing arc!";
 	}
@@ -80,27 +83,25 @@ void add_arc(link *gr[n], char c1, char c2)
 		p->key = c2;
 		p->next = gr[i]->next;
 		gr[i]->next = p;
-
-
-
 	}
 }
 void print(link *gr[n])
 {
 	cout << "\n";
-for (int  i = 0; i < n; i++)
+	for (int i = 0; i < n; i++)
+	{
+		if (gr[i])
+			cout << gr[i]->key;
+	}
+}
+void rang(link *arg[n])
 {
-	if (gr[i])
-		cout << gr[i]->key;
-}
-}
-void rang(link *arg[n]) {
 	int count = 0;
 	int max = 0;
 	int a = 0;
-		for (int i=0; i < n; i++)
+	for (int i = 0; i < n; i++)
 	{
-		
+
 		if (arg[i])
 		{
 			link *start = arg[i];
@@ -108,7 +109,6 @@ void rang(link *arg[n]) {
 			{
 				start = start->next;
 				count++;
-				
 			}
 			for (int x = 0; x < n; x++)
 			{
@@ -118,13 +118,16 @@ void rang(link *arg[n]) {
 					while (start->next)
 					{
 						start = start->next;
-						if (start->key ==arg[i]->key  ) { a++; }
+						if (start->key == arg[i]->key)
+						{
+							a++;
+						}
 					}
 				}
 			}
-			
+
 			count = count + a;
-			if (count>max)
+			if (count > max)
 			{
 				max = count;
 			}
@@ -132,7 +135,7 @@ void rang(link *arg[n]) {
 			a = 0;
 		}
 	}
-cout << "Max stepen na graph e : ";
+	cout << "Max stepen na graph e : ";
 	cout << max;
 }
 
@@ -144,20 +147,20 @@ void main()
 	char m;
 	init(gr);
 	cout << "\n Enter node ";
-	while (cin >> c&& c != '0')
-add_node(gr, c);
+	while (cin >> c && c != '0')
+		add_node(gr, c);
 	cout << "\n Vuvedi Dugi \n ";
-	do {
+	do
+	{
 		cout << "purvi vruh ";
 		cin >> k;
 		cout << "vtori vruh ";
 		cin >> m;
-		if(k != '0'&&m != '0')
+		if (k != '0' && m != '0')
 			add_arc(gr, k, m);
-	} while (k != '0'&&m != '0');
-	
- rang(gr);
-	
+	} while (k != '0' && m != '0');
+
+	rang(gr);
 
 	print(gr);
 	system("pause");

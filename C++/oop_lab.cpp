@@ -1,12 +1,14 @@
-#include<iostream>
+#include <iostream>
 #include <afxdisp.h>
-#include<string>
-#include<fstream>
+#include <string>
+#include <fstream>
 using namespace std;
 
 enum Gender
 {
-	Undefined, Male, Female
+	Undefined,
+	Male,
+	Female
 };
 class CPerson
 {
@@ -16,24 +18,29 @@ class CPerson
 	string egn;
 
 #pragma region Validation and birthdate build
-	bool isValid(const string& egn)
+	bool isValid(const string &egn)
 	{
 
-		if (egn.length() < 10 || egn.length() > 10) return false;
+		if (egn.length() < 10 || egn.length() > 10)
+			return false;
 
 		bool result = checkAndBuildBirthDate(egn.substr(0, 6));
 
-		if (result) {
+		if (result)
+		{
 
-			if (ctoi(egn[8]) % 2 != 0 && gender != Female) gender = Female;
-			if (ctoi(egn[8]) % 2 == 0 && gender != Male) gender = Male;
+			if (ctoi(egn[8]) % 2 != 0 && gender != Female)
+				gender = Female;
+			if (ctoi(egn[8]) % 2 == 0 && gender != Male)
+				gender = Male;
 
 			int controlNumber = 0;
-			int weight[]{ 2,4,8,5,10,9,7,3,6 };
+			int weight[]{2, 4, 8, 5, 10, 9, 7, 3, 6};
 			int sum = 0;
 
-			for (int i = 0; i < egn.length() - 1; i++) {
-				int t = ctoi(egn[i])*weight[i];
+			for (int i = 0; i < egn.length() - 1; i++)
+			{
+				int t = ctoi(egn[i]) * weight[i];
 				sum += t;
 			}
 
@@ -48,7 +55,7 @@ class CPerson
 
 		return false;
 	}
-	int ctoi(const char& ch)
+	int ctoi(const char &ch)
 	{
 		return (int)ch - 48;
 	}
@@ -62,11 +69,14 @@ class CPerson
 		int m = atoi(month.c_str());
 		int d = atoi(day.c_str());
 
-		if (d < 1 || d > 31) return false;
+		if (d < 1 || d > 31)
+			return false;
 
-		if (m > 12) {
+		if (m > 12)
+		{
 			m = m - 20;
-			if (m > 12) {
+			if (m > 12)
+			{
 				m = m - 20;
 
 				if (m > 12)
@@ -74,40 +84,39 @@ class CPerson
 
 				y += 2000;
 			}
-			else {
+			else
+			{
 				y += 1800;
 			}
 		}
-		else {
+		else
+		{
 			y += 1900;
 		}
 
 		COleDateTime now(COleDateTime::GetTickCount());
 		COleDateTime tbirthDate(y, m, d, 0, 0, 0);
 
-		if (now.m_status != now.invalid
-			&& tbirthDate.m_status != tbirthDate.invalid)
+		if (now.m_status != now.invalid && tbirthDate.m_status != tbirthDate.invalid)
 		{
 			if (now < tbirthDate)
 				return false;
-
 		}
 		else
 			return false;
-
 
 		this->birthDate = tbirthDate;
 		return true;
 	}
 #pragma endregion
 
-	friend ostream& operator<<(ostream& os, const CPerson& pers)
+	friend ostream &operator<<(ostream &os, const CPerson &pers)
 	{
 		return pers.Output(os);
 	}
 
 protected:
-	void GetYMD(const string& egn, int& year, int& month, int& day)
+	void GetYMD(const string &egn, int &year, int &month, int &day)
 	{
 		if (birthDate.m_status == birthDate.null)
 		{
@@ -121,7 +130,7 @@ protected:
 	{
 		return birthDate;
 	}
-	ostream& Output(ostream& stream)const
+	ostream &Output(ostream &stream) const
 	{
 		stream << "Name: " << name << endl;
 		stream << "Gender: " << GenderToString(gender) << endl;
@@ -130,9 +139,8 @@ protected:
 		return stream;
 	}
 
-
 public:
-	CPerson(const string& name, Gender gender)
+	CPerson(const string &name, Gender gender)
 	{
 		this->name = name;
 		this->gender = gender;
@@ -150,7 +158,7 @@ public:
 	}
 
 #pragma region Setters
-	void SetName(const string& name)
+	void SetName(const string &name)
 	{
 		this->name = name;
 	}
@@ -158,9 +166,10 @@ public:
 	{
 		this->gender = gender;
 	}
-	bool SetEGN(const string& egn)
+	bool SetEGN(const string &egn)
 	{
-		if (isValid(egn)) {
+		if (isValid(egn))
+		{
 			this->egn = egn;
 			return true;
 		}
@@ -188,31 +197,38 @@ public:
 
 	string GenderToString(Gender gender) const
 	{
-		switch (gender) {
-		case Male: return "Male";
-		case Female: return  "Female";
-		case Undefined: return "Undefined";
+		switch (gender)
+		{
+		case Male:
+			return "Male";
+		case Female:
+			return "Female";
+		case Undefined:
+			return "Undefined";
 		}
 	}
-	Gender stringToGender(const string& str) const
+	Gender stringToGender(const string &str) const
 	{
-		if (str == "Male") return Male;
-		else if (str == "Female") return Female;
-		else return Undefined;
+		if (str == "Male")
+			return Male;
+		else if (str == "Female")
+			return Female;
+		else
+			return Undefined;
 	}
 };
 class CAddress
 {
-	string  m_cStreetName;
-	int  m_cPostCode;
+	string m_cStreetName;
+	int m_cPostCode;
 	string m_cCity;
 
-	ostream& Output(ostream& stream) const
+	ostream &Output(ostream &stream) const
 	{
 		stream << m_cCity << " / " << m_cPostCode << " / " << m_cStreetName << endl;
 		return stream;
 	}
-	friend ostream& operator<<(ostream& os, const CAddress& addr)
+	friend ostream &operator<<(ostream &os, const CAddress &addr)
 	{
 		return addr.Output(os);
 	}
@@ -230,14 +246,12 @@ public:
 		m_cPostCode = postCode;
 		m_cCity = cityName;
 	}
-	CAddress(const CAddress& other)
+	CAddress(const CAddress &other)
 	{
 		this->m_cCity = other.m_cCity;
 		this->m_cPostCode = other.m_cPostCode;
 		this->m_cStreetName = other.m_cStreetName;
 	}
-
-
 };
 class CStudent : public CPerson
 {
@@ -246,40 +260,40 @@ class CStudent : public CPerson
 
 #pragma region Friend functions
 
-	friend void ConsoleInputEGN(CStudent& stud)
+	friend void ConsoleInputEGN(CStudent &stud)
 	{
 		string egn;
 		cin >> egn;
 		stud.SetEGN(egn);
 	}
-	friend ostream& operator<<(ostream& os, const CStudent& stud)
+	friend ostream &operator<<(ostream &os, const CStudent &stud)
 	{
 		return stud.output(os);
 	}
-	friend bool operator== (CStudent& stud1, CStudent& stud2)
+	friend bool operator==(CStudent &stud1, CStudent &stud2)
 	{
 		return stud1.GetAgeAsDateTimeObject() == stud2.GetAgeAsDateTimeObject();
 	}
-	friend bool operator!= (CStudent& stud1, CStudent& stud2)
+	friend bool operator!=(CStudent &stud1, CStudent &stud2)
 	{
 		return stud1.GetAgeAsDateTimeObject() != stud2.GetAgeAsDateTimeObject();
 	}
-	friend bool operator < (CStudent& stud1, CStudent& stud2)
+	friend bool operator<(CStudent &stud1, CStudent &stud2)
 	{
 		return stud1.GetAgeAsDateTimeObject() < stud2.GetAgeAsDateTimeObject();
 	}
-	friend bool operator > (CStudent& stud1, CStudent& stud2)
+	friend bool operator>(CStudent &stud1, CStudent &stud2)
 	{
 		return stud1.GetAgeAsDateTimeObject() > stud2.GetAgeAsDateTimeObject();
 	}
-	friend bool operator >= (CStudent& stud1, CStudent& stud2)
+	friend bool operator>=(CStudent &stud1, CStudent &stud2)
 	{
 		return stud1.GetAgeAsDateTimeObject() >= stud2.GetAgeAsDateTimeObject();
 	}
 
 #pragma endregion
 
-	ostream& output(ostream& stream)const
+	ostream &output(ostream &stream) const
 	{
 		this->Output(stream);
 		stream << "Fak. N: " << m_cFn << endl;
@@ -311,7 +325,7 @@ public:
 		this->m_CAddress = address;
 		this->SetFN(f_n);
 	}
-	CStudent(CStudent& const copy)
+	CStudent(CStudent &const copy)
 	{
 		this->SetName(copy.GetName());
 		this->SetGender(copy.GetGender());
@@ -333,7 +347,6 @@ public:
 	{
 		return m_CAddress;
 	}
-
 };
 
 void main()
@@ -354,7 +367,11 @@ void main()
 		cout << student.GetName() << " is older than " << student2.GetName() << endl;
 
 	fstream stream("D:\\Tema03.txt", ios::app); // path for the file D:\\Tema03.txt;
-	stream << student << endl << endl << student1 << endl << endl << student2 << endl;
+	stream << student << endl
+		   << endl
+		   << student1 << endl
+		   << endl
+		   << student2 << endl;
 
 	cout << student1;
 	system("pause");
